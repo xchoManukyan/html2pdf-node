@@ -7,7 +7,7 @@
 HTML to PDF without Chrome: flexbox and grid, Tailwind and Bootstrap (detected automatically), SVG, WebP and web
 fonts, right-to-left and Indic scripts, fillable forms, digital signatures, barcodes, PDF/A and AES-256 encryption.
 The rendering is done by [html2pdf-core](https://github.com/xchoManukyan/html2pdf-core), a self-contained converter
-also used by the [PHP package](https://github.com/xchoManukyan/html2pdf). No dependencies, no install scripts.
+also used by the [PHP package](https://github.com/xchoManukyan/html2pdf-php). No dependencies, no install scripts.
 
 ```js
 const fs = require('node:fs');
