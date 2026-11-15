@@ -7,7 +7,7 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ## [0.1.0]
 
-First release, with [html2pdf-core](https://github.com/xchoManukyan/html2pdf-core) 0.1.1.
+First release, with [html2pdf-core](https://github.com/xchoManukyan/html2pdf-core) 0.1.2.
 
 - `convert(html, options)` and `convertFile(file, options)`, resolving with a `Result` (`pdf` Buffer, failures,
   CSS libraries, render time); CommonJS, ES module and TypeScript types.
