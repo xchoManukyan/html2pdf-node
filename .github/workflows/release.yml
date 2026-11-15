@@ -1,0 +1,44 @@
+name: Release
+
+# Pushing a tag such as v0.2.0 tests the package, downloads the pinned
+# html2pdf-core binaries (verified against core.json), and publishes the six
+# platform packages and then the main package to npm, with provenance.
+# Needs the NPM_TOKEN secret (an npm automation token). See CONTRIBUTING.md.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+  id-token: write # npm provenance
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Version matches the tag
+        run: |
+          test "$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME#v}"
+          grep -q "^## \[${GITHUB_REF_NAME#v}\]" CHANGELOG.md
+      - run: node scripts/fetch-core.mjs --all
+      - name: Tests
+        run: npm test
+      - run: node scripts/platform-packages.mjs
+      - name: Publish the platform packages, then the main package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          for dir in npm/*/; do (cd "$dir" && npm publish --access public --provenance); done
+          npm publish --access public --provenance
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          awk -v v="${GITHUB_REF_NAME#v}" '$0 ~ "^## \\[" v "\\]" {on=1; next} on && /^## \[/ {exit} on {print}' CHANGELOG.md > notes.md
+          gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag

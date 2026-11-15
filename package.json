@@ -1,0 +1,49 @@
+{
+  "name": "@xchomanukyan/html2pdf",
+  "version": "0.1.0",
+  "description": "HTML to PDF for Node.js with flexbox, grid, Tailwind and Bootstrap, RTL and Indic scripts, fillable forms, signatures and PDF/A. A self-contained converter, no Chrome.",
+  "keywords": ["pdf", "html", "html2pdf", "html-to-pdf", "tailwind", "bootstrap", "flexbox", "pdfa", "converter"],
+  "homepage": "https://github.com/xchoManukyan/html2pdf-node",
+  "bugs": "https://github.com/xchoManukyan/html2pdf-node/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xchoManukyan/html2pdf-node.git"
+  },
+  "license": "MIT",
+  "author": "Khachatur Manukyan (https://github.com/xchoManukyan)",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs",
+      "require": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "index.mjs",
+    "index.d.ts",
+    "lib/",
+    "core.json",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "test": "node --test",
+    "fetch-core": "node scripts/fetch-core.mjs",
+    "update-core": "node scripts/update-core.mjs",
+    "platform-packages": "node scripts/platform-packages.mjs"
+  },
+  "optionalDependencies": {
+    "@xchomanukyan/html2pdf-darwin-arm64": "0.1.0",
+    "@xchomanukyan/html2pdf-darwin-x64": "0.1.0",
+    "@xchomanukyan/html2pdf-linux-arm64": "0.1.0",
+    "@xchomanukyan/html2pdf-linux-x64": "0.1.0",
+    "@xchomanukyan/html2pdf-win32-arm64": "0.1.0",
+    "@xchomanukyan/html2pdf-win32-x64": "0.1.0"
+  }
+}
