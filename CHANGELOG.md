@@ -7,7 +7,7 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ## [0.1.0]
 
-First release, with [html2pdf-core](https://github.com/xchoManukyan/html2pdf-core) 0.1.0.
+First release, with [html2pdf-core](https://github.com/xchoManukyan/html2pdf-core) 0.1.1.
 
 - `convert(html, options)` and `convertFile(file, options)`, resolving with a `Result` (`pdf` Buffer, failures,
   CSS libraries, render time); CommonJS, ES module and TypeScript types.
@@ -16,7 +16,8 @@ First release, with [html2pdf-core](https://github.com/xchoManukyan/html2pdf-cor
   timeout.
 - The converter binary in a package per platform (Linux, macOS, Windows; x64 and ARM64), verified against the
   pinned checksums before the first use; `HTML2PDF_BINARY` for a binary of your own.
-- `HttpClient` for a converter server, uploading the local files a document refers to.
+- `HttpClient` for a converter server, uploading the local files a document refers to; extra headers, such as the
+  `Authorization` token a signing server requires, with `new HttpClient(url, { headers })`.
 
 [Unreleased]: https://github.com/xchoManukyan/html2pdf-node/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/xchoManukyan/html2pdf-node/releases/tag/v0.1.0

@@ -98,15 +98,17 @@ When several applications should share one converter, run it as a service (any h
 ```js
 const { HttpClient, SERVER_CERTIFICATE } = require('@xchomanukyan/html2pdf');
 
-const client = new HttpClient('http://pdf-service:8080');
+const client = new HttpClient('http://pdf-service:8080', { headers: { Authorization: 'Bearer SECRET' } });
 const { pdf } = await client.convertFile('templates/invoice.html'); // its local files are uploaded with it
 await client.convert(html, { signature: { certificate: SERVER_CERTIFICATE, reason: 'Approved' } });
 ```
 
 The server reads no local files, so with a base path the client uploads the stylesheets, images and fonts the
 document refers to (inside the base path only). It signs with the certificate it was started with
-(`-sign-cert cert.pem -sign-key key.pem`); the key stays on the server. It has no authentication: keep it on an
-internal network, or pass headers for an authenticating proxy with `new HttpClient(url, { headers })`.
+(`-sign-cert cert.pem -sign-key key.pem -sign-token SECRET`), and only for requests that send the secret as above, so
+the key stays on the server and nobody else who can reach it can sign documents in your name. Apart from signing it
+has no authentication: keep it on an internal network, or pass headers for an authenticating proxy the same way.
+`-max-jobs N` limits the conversions it runs at once (default: the number of CPUs).
 
 ## Development
 

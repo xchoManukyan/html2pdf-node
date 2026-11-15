@@ -14,6 +14,7 @@ const { conversionTests } = require('./conversions');
 
 let server;
 let client;
+let unsigned;
 
 function freePort() {
   return new Promise((resolve, reject) => {
@@ -39,9 +40,19 @@ test.before(async () => {
   const port = await freePort();
   server = spawn(testBinary(), ['-addr', `127.0.0.1:${port}`,
     '-sign-cert', path.join(fixtures, 'signing', 'test-cert.pem'),
-    '-sign-key', path.join(fixtures, 'signing', 'test-key.pem')], { stdio: 'ignore', windowsHide: true });
+    '-sign-key', path.join(fixtures, 'signing', 'test-key.pem'),
+    '-sign-token', 'test-token'], { stdio: 'ignore', windowsHide: true });
   await waitFor(port);
-  client = new HttpClient(`http://127.0.0.1:${port}`);
+  // the server signs only requests that carry its token
+  client = new HttpClient(`http://127.0.0.1:${port}`, { headers: { Authorization: 'Bearer test-token' } });
+  unsigned = new HttpClient(`http://127.0.0.1:${port}`);
+});
+
+test('server: signing without the token is refused', async () => {
+  await assert.rejects(unsigned.convert('<p>x</p>', { signature: { certificate: SERVER_CERTIFICATE } }),
+    (err) => err instanceof Html2PdfError && /token/.test(err.message));
+  const { pdf } = await unsigned.convert('<p>x</p>'); // unsigned conversions need no token
+  assert.equal(pdf.subarray(0, 5).toString(), '%PDF-');
 });
 
 test.after(() => {
